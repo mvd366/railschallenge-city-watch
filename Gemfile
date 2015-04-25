@@ -11,4 +11,5 @@ group :development, :test do
   gem 'database_cleaner', '1.4.1'
   gem 'web-console', '~> 2.0'
   gem 'tzinfo-data', platforms: [:x64_mingw,:mingw, :mswin]
+  gem 'responders'
 end
