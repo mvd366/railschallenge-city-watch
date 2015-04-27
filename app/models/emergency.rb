@@ -1,5 +1,5 @@
 class Emergency < ActiveRecord::Base
-  has_one :responder, primary_key: :code
+  has_many :responders, primary_key: :code, foreign_key: :emergency_code
 
   validates :code,
             presence: true,
@@ -20,12 +20,14 @@ class Emergency < ActiveRecord::Base
   def self.full_responses
     full_response_emergencies = Emergency.where(full_response: true).count
     total_emergencies = Emergency.all.count
-    return [full_response_emergencies, total_emergencies]
+    [full_response_emergencies, total_emergencies]
   end
 
   def before_save(emergency)
-    if emergency.fire_severity > 0 && emergency.police_severity > 0 && emergency.medical_response > 0
-      emergency.full_response = true
-    end
+    Responder.where(emergency_code: emergency.code).update_all(emergency_code: nil) unless emergency.resolved_at.blank?
+  end
+
+  def self.responder_names(emergency)
+    emergency.responders.pluck(:emergency_code)
   end
 end

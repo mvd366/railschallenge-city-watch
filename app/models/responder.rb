@@ -1,5 +1,5 @@
 class Responder < ActiveRecord::Base
-  belongs_to :emergency, foreign_key: :emergency_code
+  belongs_to :emergency, primary_key: :code, foreign_key: :emergency_code
 
   validates :name,
             presence: true,
