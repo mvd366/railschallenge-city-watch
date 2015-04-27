@@ -23,10 +23,6 @@ class Emergency < ActiveRecord::Base
     [full_response_emergencies, total_emergencies]
   end
 
-  def before_save(emergency)
-    Responder.where(emergency_code: emergency.code).update_all(emergency_code: nil) unless emergency.resolved_at.blank?
-  end
-
   def self.responder_names(emergency)
     emergency.responders.pluck(:name)
   end

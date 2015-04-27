@@ -34,6 +34,7 @@ class EmergenciesController < ApplicationController
       render nothing: true
     else
       @emergency.update_attributes update_emergency_params
+      Responder.clear(@emergency) if @emergency.resolved_at.present?
       render 'show', status: 201
     end
   end

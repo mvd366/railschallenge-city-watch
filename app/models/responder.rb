@@ -12,16 +12,20 @@ class Responder < ActiveRecord::Base
             presence: true,
             inclusion: (1..5)
 
+  def self.clear(emergency)
+    freed_responders = Responder.where(emergency_code: emergency.code)
+    freed_responders.each do |freed_responder|
+      freed_responder.emergency_code = nil
+      freed_responder.save
+    end
+  end
+
   def self.dispatch(emergency)
     fire_response = dispatch_fire(emergency)
     medical_response = dispatch_medical(emergency)
     police_response = dispatch_police(emergency)
 
-    if fire_response && medical_response && police_response
-      emergency.full_response = true
-    else
-      emergency.full_response = false
-    end
+    emergency.full_response = (fire_response && medical_response && police_response) ? true : false
     emergency.save
   end
 
