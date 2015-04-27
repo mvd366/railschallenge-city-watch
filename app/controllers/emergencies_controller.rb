@@ -11,6 +11,7 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.new new_emergency_params
     if @emergency.valid?
       @emergency.save
+      Responder.dispatch(@emergency)
       # TODO: Dispatch responders
       render 'show', status: 201
     else

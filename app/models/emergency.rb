@@ -28,6 +28,6 @@ class Emergency < ActiveRecord::Base
   end
 
   def self.responder_names(emergency)
-    emergency.responders.pluck(:emergency_code)
+    emergency.responders.pluck(:name)
   end
 end
